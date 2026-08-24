@@ -1,0 +1,177 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-pop-purple: #aa3bff;
+  --color-pop-purple-dark: #7c1fd4;
+  --color-pop-pink: #ff5da2;
+  --color-pop-yellow: #ffcf4d;
+  --color-pop-cream: #fff8ec;
+  --font-display: 'Baloo 2', 'Segoe UI', system-ui, sans-serif;
+  --font-hand: 'Caveat', 'Segoe UI', cursive;
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #fbfbfe;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0c0c14;
+  }
+}
+
+/* --- Sistema "vibrante e glass": sfondo chiaro, blob sfumati, superfici in vetro. --- */
+
+.glass {
+  /* background-color, non "background": la scorciatoia azzererebbe il
+     background-image quando .glass viene combinata con un gradiente
+     Tailwind (bg-gradient-to-br ecc.) sullo stesso elemento. */
+  background-color: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass {
+    background-color: rgba(24, 22, 34, 0.55);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Ombre morbide e colorate (si adattano alla palette scelta dall'utente, via
+   color-mix sulla variabile del tema) invece delle ombre nere dure di prima. */
+.shadow-glow {
+  box-shadow: 0 16px 40px -12px color-mix(in srgb, var(--color-pop-purple) 45%, transparent);
+}
+
+.shadow-glow-sm {
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--color-pop-purple) 45%, transparent);
+}
+
+/* Micro-animazioni condivise: nessuna libreria, solo CSS. */
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-16px) translateX(8px);
+  }
+}
+
+/* Il "reveal": la foto emerge da una leggera sfocatura invece di apparire di scatto,
+   per dare peso al momento in cui una foto si sblocca. */
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* Selezione con un piccolo "pop" invece di un timbro: adatto a un controllo tipo like. */
+@keyframes pop-select {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.animate-reveal {
+  animation: reveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.animate-pop-select {
+  animation: pop-select 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
