@@ -110,7 +110,7 @@ export function Capture() {
 
   if (cameraError) {
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-4 p-8 text-center">
+      <div className="flex h-dvh flex-col items-center justify-center gap-4 p-8 text-center">
         <span className="text-4xl">🚫📷</span>
         <p className="text-red-500">{cameraError}</p>
         <Button variant="outline" onClick={() => navigate(`/circles/${id}`)}>
@@ -121,7 +121,7 @@ export function Capture() {
   }
 
   return (
-    <div className="relative flex h-full min-h-svh flex-col bg-black">
+    <div className="relative flex h-dvh flex-col bg-black">
       {previewUrl ? (
         <img
           src={previewUrl}
