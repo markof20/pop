@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useCircles } from '../hooks/useCircles'
 import { useProfile } from '../hooks/useProfile'
+import { supabase } from '../lib/supabase'
 import { getCategoryStyle } from '../components/ui/CategoryIcon'
 import { Avatar } from '../components/ui/Avatar'
 import { Onboarding } from './Onboarding'
@@ -10,6 +12,19 @@ export function Home() {
   const { user, signOut } = useAuth()
   const { circles, loading } = useCircles()
   const { profile } = useProfile()
+  const [maxStreak, setMaxStreak] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!user) return
+    supabase
+      .from('user_streaks')
+      .select('current_streak')
+      .eq('user_id', user.id)
+      .then(({ data }) => {
+        const max = (data ?? []).reduce((m, row) => Math.max(m, row.current_streak as number), 0)
+        setMaxStreak(max)
+      })
+  }, [user])
 
   if (loading) {
     return <div className="p-10 text-center text-neutral-500">Caricamento cerchie...</div>
@@ -24,28 +39,44 @@ export function Home() {
   return (
     <div className="relative min-h-full">
       <div className="relative mx-auto flex max-w-2xl flex-col gap-6 px-4 py-10">
-        <div className="glass shadow-glow animate-pop-in flex items-center justify-between rounded-3xl bg-pop-purple p-6 text-white">
+        <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-white/70">Ciao, {username} 👋</p>
-            <h1 className="font-display text-2xl font-extrabold">Le tue cerchie</h1>
+            <h1 className="font-display text-3xl font-bold">Ciao {username}</h1>
+            <p className="mt-0.5 text-sm text-neutral-500">
+              {circles.length} cerchi{circles.length === 1 ? 'a' : 'e'} attiv{circles.length === 1 ? 'a' : 'e'}
+            </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Link to="/profile" title="Il tuo profilo">
-              <Avatar
-                username={username}
-                avatarUrl={profile?.avatar_url}
-                size={36}
-                className="border-white/40!"
-              />
-            </Link>
+          <div className="flex items-center gap-3">
             <button
               onClick={() => signOut()}
-              className="rounded-full bg-black/15 px-3 py-1.5 text-sm font-semibold text-white/90 transition hover:bg-black/25 active:scale-95"
+              className="text-xs font-medium text-neutral-400 transition hover:text-neutral-600 dark:hover:text-neutral-200"
             >
               Esci
             </button>
+            <Link to="/profile" title="Il tuo profilo">
+              <Avatar username={username} avatarUrl={profile?.avatar_url} size={44} />
+            </Link>
           </div>
         </div>
+
+        {maxStreak !== null && (
+          <div className="shadow-glow animate-pop-in flex items-center justify-between rounded-3xl bg-neutral-900 p-4 text-white">
+            <div className="flex items-center gap-3">
+              <span className={`text-2xl ${maxStreak > 0 ? '' : 'opacity-40 grayscale'}`}>🔥</span>
+              <div>
+                <p className="text-sm font-bold">
+                  {maxStreak > 0
+                    ? `${maxStreak} giorn${maxStreak === 1 ? 'o' : 'i'} di streak`
+                    : 'Nessuno streak attivo'}
+                </p>
+                <p className="text-xs text-neutral-400">
+                  {maxStreak > 0 ? 'Continua così!' : 'Carica una foto oggi per iniziare'}
+                </p>
+              </div>
+            </div>
+            <span className="text-2xl">🏆</span>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           {circles.map((circle, i) => {
@@ -81,9 +112,21 @@ export function Home() {
 
         <Link
           to="/onboarding"
-          className="flex items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-neutral-300 p-5 text-center font-display font-bold text-neutral-500 transition hover:border-pop-purple hover:text-pop-purple hover:bg-white/50 active:scale-[0.98] dark:border-neutral-700"
+          className="shadow-glow-sm animate-pop-in flex items-center justify-center gap-2 rounded-2xl bg-pop-purple px-5 py-4 text-center font-display font-bold text-white transition hover:brightness-105 active:scale-[0.98]"
         >
-          <span className="text-xl">➕</span> Crea o unisciti a un'altra cerchia
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Crea o unisciti a un'altra cerchia
         </Link>
       </div>
     </div>
