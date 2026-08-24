@@ -5,13 +5,12 @@ import { ThemeSync } from './components/ThemeSync'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import { Onboarding } from './pages/Onboarding'
-import { CircleFeed } from './pages/CircleFeed'
 import { CircleSettings } from './pages/CircleSettings'
 import { Capture } from './pages/Capture'
 import { PhotoDetail } from './pages/PhotoDetail'
 import { Profile } from './pages/Profile'
 import { Party } from './pages/Party'
-import { GifBattle } from './pages/GifBattle'
+import { CircleHome } from './pages/CircleHome'
 
 function App() {
   return (
@@ -48,7 +47,7 @@ function App() {
             path="/circles/:id"
             element={
               <ProtectedRoute>
-                <CircleFeed />
+                <CircleHome />
               </ProtectedRoute>
             }
           />
@@ -81,14 +80,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <Party />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/circles/:id/gif"
-            element={
-              <ProtectedRoute>
-                <GifBattle />
               </ProtectedRoute>
             }
           />

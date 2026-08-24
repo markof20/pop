@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './useAuth'
-import type { Circle, CircleCategory, CircleRole } from '../types/database'
+import type { Circle, CircleCategory, CircleRole, CircleType } from '../types/database'
 
 interface CircleWithRole extends Circle {
   my_role: CircleRole
@@ -47,11 +47,17 @@ export function useCircles() {
     refresh()
   }, [refresh])
 
-  async function createCircle(name: string, category: CircleCategory = 'normal', timeWindowMinutes = 120) {
+  async function createCircle(
+    name: string,
+    category: CircleCategory = 'normal',
+    timeWindowMinutes = 120,
+    circleType: CircleType = 'photo',
+  ) {
     const { data, error: rpcError } = await supabase.rpc('create_circle', {
       p_name: name,
       p_time_window_minutes: timeWindowMinutes,
       p_category: category,
+      p_circle_type: circleType,
     })
     if (rpcError) throw rpcError
     await refresh()

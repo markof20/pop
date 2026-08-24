@@ -36,11 +36,10 @@ function useCountdown(target: Date | null) {
   return label
 }
 
-export function GifBattle() {
+export function GifCircleFeed() {
   const { id } = useParams<{ id: string }>()
   const { user } = useAuth()
   const {
-    isAdmin,
     session,
     phase,
     mySubmission,
@@ -49,7 +48,6 @@ export function GifBattle() {
     loading,
     busy,
     error,
-    startSession,
     submitGif,
     voteGif,
   } = useGifBattle(id)
@@ -83,8 +81,8 @@ export function GifBattle() {
     }
   }
 
-  if (loading) {
-    return <div className="p-10 text-center text-neutral-500">Preparo il round GIF... 🎬</div>
+  if (loading || !session) {
+    return <div className="p-10 text-center text-neutral-500">Preparo la frase di oggi... 🎬</div>
   }
 
   const winnerCount = results[0]?.vote_count ?? 0
@@ -92,40 +90,27 @@ export function GifBattle() {
   return (
     <div className="relative mx-auto flex max-w-2xl flex-col gap-6 px-4 py-8">
       <div className="flex items-center justify-between">
-        <Link to={`/circles/${id}`} className="text-sm font-medium text-neutral-500 hover:underline">
-          ← Cerchia
+        <Link to="/" className="text-sm font-medium text-neutral-500 hover:underline">
+          ← Cerchie
         </Link>
-        <h1 className="font-display text-lg font-bold">🎬 GIF Battle</h1>
+        <div className="flex items-center gap-4">
+          <Link to={`/circles/${id}/party`} className="text-sm font-medium text-neutral-500 hover:underline">
+            🎉 Party
+          </Link>
+          <Link to={`/circles/${id}/settings`} className="text-sm font-medium text-neutral-500 hover:underline">
+            Impostazioni →
+          </Link>
+        </div>
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      {!session && (
-        <Card className="animate-pop-in text-center">
-          <p className="mb-4 text-sm text-neutral-500">
-            Esce una frase a caso: ognuno risponde con una GIF cercata al volo, poi tutti votano quella
-            che si abbina meglio (non si può votare la propria).
-          </p>
-          {isAdmin ? (
-            <Button size="lg" fullWidth disabled={busy} onClick={() => startSession()}>
-              {busy ? 'Avvio...' : '🎬 Avvia round GIF'}
-            </Button>
-          ) : (
-            <p className="text-sm text-neutral-400">Aspetta che un admin della cerchia avvii un round</p>
-          )}
-        </Card>
-      )}
+      <Card className="shadow-glow animate-pop-in bg-gradient-to-br from-pop-purple to-pop-pink text-center text-white">
+        <p className="text-xs font-bold uppercase tracking-widest text-white/70">La frase di oggi</p>
+        <h1 className="font-display mt-2 text-2xl font-extrabold drop-shadow-sm">{session.prompt_text}</h1>
+      </Card>
 
-      {session && (
-        <Card className="shadow-glow animate-pop-in bg-gradient-to-br from-pop-purple to-pop-pink text-center text-white">
-          <p className="text-xs font-bold uppercase tracking-widest text-white/70">La frase di oggi</p>
-          <h2 className="font-display mt-2 text-2xl font-extrabold drop-shadow-sm">
-            {session.prompt_text}
-          </h2>
-        </Card>
-      )}
-
-      {session && phase === 'submitting' && (
+      {phase === 'submitting' && (
         <Card className="text-center">
           <p className="mb-3 text-sm text-neutral-500">⏳ Hai {submissionCountdown} per mandare la tua GIF</p>
           {submitError && <p className="mb-3 text-sm text-red-600">{submitError}</p>}
@@ -149,7 +134,7 @@ export function GifBattle() {
         </Card>
       )}
 
-      {session && phase === 'voting' && (
+      {phase === 'voting' && (
         <div>
           <p className="mb-3 text-center text-sm text-neutral-500">
             🗳️ Vota la GIF migliore — chiude tra {votingCountdown}
@@ -196,9 +181,9 @@ export function GifBattle() {
         </div>
       )}
 
-      {session && phase === 'completed' && (
+      {phase === 'completed' && (
         <Card className="animate-bounce-in">
-          <h2 className="mb-3 font-display text-lg font-bold">🏆 Risultati</h2>
+          <h2 className="mb-3 font-display text-lg font-bold">🏆 Risultati di oggi</h2>
           {results.length === 0 ? (
             <EmptyState icon="🤷" text="Nessuna GIF inviata questo round" />
           ) : (
@@ -221,11 +206,7 @@ export function GifBattle() {
               ))}
             </ol>
           )}
-          {isAdmin && (
-            <Button fullWidth variant="secondary" disabled={busy} onClick={() => startSession()} className="mt-4">
-              {busy ? 'Avvio...' : '🎬 Nuovo round'}
-            </Button>
-          )}
+          <p className="mt-4 text-center text-xs text-neutral-400">Torna domani per una nuova frase 🎬</p>
         </Card>
       )}
 

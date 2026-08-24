@@ -73,7 +73,7 @@ export function Home() {
               className="glass shadow-glow-sm animate-fade-in-up flex flex-col overflow-hidden rounded-3xl transition hover:-translate-y-1 hover:shadow-glow active:scale-[0.98]"
             >
               <div className={`flex h-24 items-center justify-center text-4xl ${CIRCLE_CARD_GRADIENT}`}>
-                {CATEGORY_ICON[circle.category]}
+                {circle.circle_type === 'gif' ? '🎬' : CATEGORY_ICON[circle.category]}
               </div>
               <div className="flex flex-1 flex-col gap-1 p-4">
                 <h2 className="font-display line-clamp-2 text-base leading-tight font-bold">

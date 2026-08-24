@@ -13,6 +13,7 @@ export interface Profile {
 }
 
 export type CircleCategory = 'amici' | 'normal' | 'hot'
+export type CircleType = 'photo' | 'gif'
 
 export interface Circle {
   id: string
@@ -20,6 +21,7 @@ export interface Circle {
   invite_code: string
   time_window_minutes: number
   category: CircleCategory
+  circle_type: CircleType
   created_by: string
   created_at: string
 }
@@ -161,6 +163,7 @@ export interface GifSession {
   circle_id: string
   started_by: string
   prompt_text: string
+  session_date: string
   submission_end_at: string
   voting_end_at: string
   created_at: string

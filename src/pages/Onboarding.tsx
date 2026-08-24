@@ -5,7 +5,7 @@ import { useCircles } from '../hooks/useCircles'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { pillClass } from '../lib/style'
-import type { CircleCategory } from '../types/database'
+import type { CircleCategory, CircleType } from '../types/database'
 
 const inputClasses =
   'rounded-xl border-2 border-neutral-200 px-4 py-2.5 outline-none transition focus:border-pop-purple dark:border-neutral-700 dark:bg-neutral-800'
@@ -16,11 +16,17 @@ const CATEGORY_OPTIONS: { value: CircleCategory; label: string }[] = [
   { value: 'hot', label: '🔥 Hot' },
 ]
 
+const TYPE_OPTIONS: { value: CircleType; label: string; description: string }[] = [
+  { value: 'photo', label: '📷 Foto', description: 'Prompt del giorno, scatta e vota la foto migliore' },
+  { value: 'gif', label: '🎬 Gif', description: 'Frase del giorno, rispondi con una GIF e vota la migliore' },
+]
+
 export function Onboarding() {
   const navigate = useNavigate()
   const { createCircle, joinCircleByCode } = useCircles()
 
   const [circleName, setCircleName] = useState('')
+  const [circleType, setCircleType] = useState<CircleType>('photo')
   const [circleCategory, setCircleCategory] = useState<CircleCategory>('normal')
   const [inviteCode, setInviteCode] = useState('')
   const [creating, setCreating] = useState(false)
@@ -33,7 +39,7 @@ export function Onboarding() {
     setCreateError(null)
     setCreating(true)
     try {
-      const circle = await createCircle(circleName.trim(), circleCategory)
+      const circle = await createCircle(circleName.trim(), circleCategory, 120, circleType)
       navigate(`/circles/${circle.id}`)
     } catch (err) {
       setCreateError(err instanceof Error ? err.message : 'Impossibile creare la cerchia')
@@ -81,18 +87,39 @@ export function Onboarding() {
             placeholder="Es. Gli Amici del Bar"
             className={inputClasses}
           />
-          <div className="flex gap-2">
-            {CATEGORY_OPTIONS.map((opt) => (
+
+          <div className="flex flex-col gap-1.5">
+            {TYPE_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setCircleCategory(opt.value)}
-                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${pillClass(circleCategory === opt.value)}`}
+                onClick={() => setCircleType(opt.value)}
+                className={`rounded-xl border-2 px-3 py-2 text-left transition ${
+                  circleType === opt.value
+                    ? 'border-pop-purple bg-pop-purple/5'
+                    : 'border-neutral-200 dark:border-neutral-700'
+                }`}
               >
-                {opt.label}
+                <span className="text-sm font-semibold">{opt.label}</span>
+                <p className="text-xs text-neutral-500">{opt.description}</p>
               </button>
             ))}
           </div>
+
+          {circleType === 'photo' && (
+            <div className="flex gap-2">
+              {CATEGORY_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setCircleCategory(opt.value)}
+                  className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${pillClass(circleCategory === opt.value)}`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
           {createError && <p className="text-sm text-red-500">{createError}</p>}
           <Button type="submit" disabled={creating} className="mt-1">
             {creating ? 'Creazione...' : 'Crea'}

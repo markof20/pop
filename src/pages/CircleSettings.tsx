@@ -238,26 +238,30 @@ export function CircleSettings() {
         <Card as="form" onSubmit={handleSaveSettings}>
           <h2 className="mb-3 font-display text-lg font-bold">Impostazioni cerchia</h2>
 
-          <label className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            Categoria dei prompt
-          </label>
-          <div className="mb-4 flex gap-2">
-            {CATEGORY_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => setCategory(opt.value)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${pillClass(category === opt.value)}`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+          {circle.circle_type === 'photo' && (
+            <>
+              <label className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Categoria dei prompt
+              </label>
+              <div className="mb-4 flex gap-2">
+                {CATEGORY_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setCategory(opt.value)}
+                    className={`rounded-full px-4 py-2 text-sm font-semibold transition ${pillClass(category === opt.value)}`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
 
-          <p className="mb-4 text-xs text-neutral-400">
-            Il livello (intensità del prompt) lo sceglie ogni membro singolarmente, quando apre la
-            sfida del giorno.
-          </p>
+              <p className="mb-4 text-xs text-neutral-400">
+                Il livello (intensità del prompt) lo sceglie ogni membro singolarmente, quando apre la
+                sfida del giorno.
+              </p>
+            </>
+          )}
 
           <label className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
             Finestra di tempo per partecipare (minuti)
