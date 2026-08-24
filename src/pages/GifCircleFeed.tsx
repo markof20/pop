@@ -112,7 +112,6 @@ export function GifCircleFeed() {
 
       {phase === 'submitting' && (
         <Card className="text-center">
-          <p className="mb-3 text-sm text-neutral-500">⏳ Hai {submissionCountdown} per mandare la tua GIF</p>
           {submitError && <p className="mb-3 text-sm text-red-600">{submitError}</p>}
           {mySubmission ? (
             <>
@@ -121,15 +120,17 @@ export function GifCircleFeed() {
                 alt="La tua GIF"
                 className="mx-auto mb-3 max-h-48 rounded-2xl shadow-md"
               />
-              <p className="mb-3 text-sm text-neutral-500">✅ GIF inviata — aspetta gli altri</p>
-              <Button variant="outline" disabled={busy} onClick={() => setPickerOpen(true)}>
-                Cambia GIF
-              </Button>
+              <p className="text-sm text-neutral-500">✅ GIF inviata — aspetta gli altri</p>
             </>
           ) : (
-            <Button size="lg" fullWidth disabled={busy} onClick={() => setPickerOpen(true)}>
-              🔍 Scegli una GIF
-            </Button>
+            <>
+              <p className="mb-3 text-sm text-neutral-500">
+                ⏳ Hai {submissionCountdown} per mandare la tua GIF
+              </p>
+              <Button size="lg" fullWidth disabled={busy} onClick={() => setPickerOpen(true)}>
+                🔍 Scegli una GIF
+              </Button>
+            </>
           )}
         </Card>
       )}
