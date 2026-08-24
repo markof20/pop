@@ -5,8 +5,6 @@ import type { GifSession, GifSubmission, GifSubmissionResult } from '../types/da
 
 const POLL_MS = 4000
 
-export type GifBattlePhase = 'submitting' | 'voting' | 'completed'
-
 // Le RPC di supabase-js rifiutano con un PostgrestError (un oggetto semplice con
 // .message), non con un'istanza di Error: "err instanceof Error" lo lascerebbe
 // passare e nasconderebbe il messaggio reale dietro un generico "Errore, riprova".
@@ -18,18 +16,9 @@ function getErrorMessage(err: unknown): string {
   return 'Errore, riprova'
 }
 
-// Nessuna colonna di stato in gif_sessions: la fase si deriva confrontando
-// now() con submission_end_at/voting_end_at, calcolata qui allo stesso modo
-// delle RPC lato server (che sono l'unica fonte di verità sui permessi).
-export function gifBattlePhase(session: GifSession, now: Date): GifBattlePhase {
-  if (now < new Date(session.submission_end_at)) return 'submitting'
-  if (now < new Date(session.voting_end_at)) return 'voting'
-  return 'completed'
-}
-
-// Il round di oggi si crea da solo al primo accesso di un membro (stesso
-// pattern lazy di useDailyChallenge/get_active_challenge): nessuna azione di
-// avvio, la cerchia GIF ha sempre un round "in corso" non appena esiste.
+// Stesso ritmo delle sfide foto: un solo round per cerchia per giorno solare,
+// creato al primo accesso di un membro. Manda/vota funzionano in qualunque
+// momento del giorno fino a mezzanotte, senza finestre di tempo separate.
 export function useGifBattle(circleId: string | undefined) {
   const { user } = useAuth()
   const sessionIdRef = useRef<string | null>(null)
@@ -38,6 +27,10 @@ export function useGifBattle(circleId: string | undefined) {
   const [mySubmission, setMySubmission] = useState<GifSubmission | null>(null)
   const [myVote, setMyVote] = useState<string | null>(null)
   const [results, setResults] = useState<GifSubmissionResult[]>([])
+  const [yesterday, setYesterday] = useState<{
+    session: GifSession
+    results: GifSubmissionResult[]
+  } | null>(null)
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -58,15 +51,14 @@ export function useGifBattle(circleId: string | undefined) {
     sessionIdRef.current = found.id
     setSession(found)
 
-    const phase = gifBattlePhase(found, new Date())
-
     const { data: mine } = await supabase
       .from('gif_submissions')
       .select('*')
       .eq('session_id', found.id)
       .eq('user_id', user.id)
       .maybeSingle()
-    setMySubmission((mine as GifSubmission | null) ?? null)
+    const mySub = (mine as GifSubmission | null) ?? null
+    setMySubmission(mySub)
 
     const { data: vote } = await supabase
       .from('gif_votes')
@@ -76,7 +68,7 @@ export function useGifBattle(circleId: string | undefined) {
       .maybeSingle()
     setMyVote((vote?.submission_id as string | undefined) ?? null)
 
-    if (phase === 'voting' || phase === 'completed') {
+    if (mySub) {
       const { data: rows, error: resultsError } = await supabase.rpc('get_gif_session_results', {
         p_session_id: found.id,
       })
@@ -88,6 +80,27 @@ export function useGifBattle(circleId: string | undefined) {
       setResults((rows ?? []) as GifSubmissionResult[])
     } else {
       setResults([])
+    }
+
+    const { data: prevSession, error: prevError } = await supabase.rpc(
+      'get_latest_completed_gif_session',
+      { p_circle_id: circleId },
+    )
+    if (prevError) {
+      setError(prevError.message)
+      setLoading(false)
+      return
+    }
+    if (prevSession) {
+      const { data: prevRows } = await supabase.rpc('get_gif_session_results', {
+        p_session_id: (prevSession as GifSession).id,
+      })
+      setYesterday({
+        session: prevSession as GifSession,
+        results: (prevRows ?? []) as GifSubmissionResult[],
+      })
+    } else {
+      setYesterday(null)
     }
 
     setError(null)
@@ -139,10 +152,10 @@ export function useGifBattle(circleId: string | undefined) {
 
   return {
     session,
-    phase: session ? gifBattlePhase(session, new Date()) : null,
     mySubmission,
     myVote,
     results,
+    yesterday,
     loading,
     busy,
     error,

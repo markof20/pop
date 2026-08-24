@@ -164,8 +164,6 @@ export interface GifSession {
   started_by: string
   prompt_text: string
   session_date: string
-  submission_end_at: string
-  voting_end_at: string
   created_at: string
 }
 
