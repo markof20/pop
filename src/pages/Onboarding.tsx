@@ -10,6 +10,17 @@ import type { CircleCategory, CircleType } from '../types/database'
 const inputClasses =
   'rounded-xl border-2 border-neutral-200 px-4 py-2.5 outline-none transition focus:border-pop-purple dark:border-neutral-700 dark:bg-neutral-800'
 
+// Le RPC di supabase-js rifiutano con un PostgrestError (un oggetto semplice con
+// .message), non con un'istanza di Error: "err instanceof Error" lo lascerebbe
+// passare e nasconderebbe il messaggio reale dietro un generico "Errore, riprova".
+function getErrorMessage(err: unknown, fallback: string): string {
+  if (err instanceof Error) return err.message
+  if (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string') {
+    return err.message
+  }
+  return fallback
+}
+
 const CATEGORY_OPTIONS: { value: CircleCategory; label: string }[] = [
   { value: 'amici', label: '👥 Amici' },
   { value: 'normal', label: '🎲 Normal' },
@@ -42,7 +53,7 @@ export function Onboarding() {
       const circle = await createCircle(circleName.trim(), circleCategory, 120, circleType)
       navigate(`/circles/${circle.id}`)
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : 'Impossibile creare la cerchia')
+      setCreateError(getErrorMessage(err, 'Impossibile creare la cerchia'))
     } finally {
       setCreating(false)
     }
@@ -56,7 +67,7 @@ export function Onboarding() {
       const circle = await joinCircleByCode(inviteCode)
       navigate(`/circles/${circle.id}`)
     } catch (err) {
-      setJoinError(err instanceof Error ? err.message : 'Codice non valido')
+      setJoinError(getErrorMessage(err, 'Codice non valido'))
     } finally {
       setJoining(false)
     }
