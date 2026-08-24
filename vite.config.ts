@@ -15,7 +15,7 @@ export default defineConfig({
         name: 'POP - Prompt Of the day Photo',
         short_name: 'POP',
         description: 'Sfida fotografica quotidiana per la tua cerchia di amici',
-        theme_color: '#aa3bff',
+        theme_color: '#7C5CFC',
         background_color: '#16171d',
         display: 'standalone',
         orientation: 'portrait',

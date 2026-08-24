@@ -53,28 +53,15 @@ export function Login() {
   }
 
   return (
-    <div className="relative flex min-h-full flex-col items-center justify-center gap-8 overflow-hidden bg-gradient-to-br from-pop-purple via-pop-purple-dark to-pop-pink px-4 py-12">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full bg-pop-yellow/40 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-20 top-1/3 h-80 w-80 rounded-full bg-white/20 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-24 left-1/4 h-72 w-72 rounded-full bg-pop-pink/40 blur-3xl"
-      />
-
+    <div className="relative flex min-h-full flex-col items-center justify-center gap-8 px-4 py-12">
       <div className="relative text-center animate-bounce-in">
-        <h1 className="font-display text-6xl font-extrabold tracking-tight text-white drop-shadow-lg">
+        <h1 className="font-display text-6xl font-extrabold tracking-tight text-pop-purple">
           POP <span className="inline-block">📸</span>
         </h1>
-        <p className="mt-2 font-medium text-white/80">Prompt Of the day Photo</p>
+        <p className="mt-2 font-medium text-neutral-500">Prompt Of the day Photo</p>
       </div>
 
-      <div className="relative w-full max-w-sm animate-pop-in rounded-3xl border border-white/40 bg-white/85 p-6 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-neutral-900/70">
+      <div className="glass shadow-glow relative w-full max-w-sm animate-pop-in rounded-3xl p-6">
         <div className="mb-6 flex rounded-full bg-neutral-100 p-1 dark:bg-neutral-800">
           <button
             type="button"

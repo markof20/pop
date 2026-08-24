@@ -259,7 +259,7 @@ export function PhotoDetail() {
             title={isTopPicked ? 'Top pick assegnato' : 'Dai il top pick'}
             className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full text-2xl transition active:scale-90 disabled:opacity-50 ${
               isTopPicked
-                ? 'animate-pop-select shadow-glow-sm bg-gradient-to-br from-pop-purple to-pop-pink text-white'
+                ? 'animate-pop-select shadow-glow-sm bg-pop-purple text-white'
                 : 'glass text-neutral-400 hover:text-pop-purple dark:text-neutral-500'
             }`}
           >

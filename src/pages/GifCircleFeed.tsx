@@ -88,7 +88,7 @@ export function GifCircleFeed() {
         </Card>
       )}
 
-      <Card className="shadow-glow animate-pop-in bg-gradient-to-br from-pop-purple to-pop-pink text-center text-white">
+      <Card className="shadow-glow animate-pop-in bg-pop-purple text-center text-white">
         <p className="text-xs font-bold uppercase tracking-widest text-white/70">La frase di oggi</p>
         <h1 className="font-display mt-2 text-2xl font-extrabold drop-shadow-sm">{session.prompt_text}</h1>
       </Card>

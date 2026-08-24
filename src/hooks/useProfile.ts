@@ -35,7 +35,7 @@ export function useProfile() {
   }, [refresh])
 
   const updateProfile = useCallback(
-    async (patch: Partial<Pick<Profile, 'avatar_url' | 'gender' | 'theme_palette' | 'theme_font'>>) => {
+    async (patch: Partial<Pick<Profile, 'avatar_url' | 'gender'>>) => {
       if (!user) return
       const { error: updateError } = await supabase.from('profiles').update(patch).eq('id', user.id)
       if (updateError) {

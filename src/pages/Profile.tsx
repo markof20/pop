@@ -4,7 +4,6 @@ import { useAuth } from '../hooks/useAuth'
 import { useProfile } from '../hooks/useProfile'
 import { supabase } from '../lib/supabase'
 import { resizeImageToSquareJpeg } from '../lib/resizeImage'
-import { PALETTES, FONTS, applyTheme } from '../lib/themes'
 import type { Gender } from '../types/database'
 import { Card } from '../components/ui/Card'
 import { Avatar } from '../components/ui/Avatar'
@@ -51,26 +50,6 @@ export function Profile() {
   async function handleGenderChange(gender: Gender) {
     try {
       await updateProfile({ gender })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Errore, riprova')
-    }
-  }
-
-  async function handlePaletteChange(key: string) {
-    if (!profile) return
-    applyTheme(key, profile.theme_font)
-    try {
-      await updateProfile({ theme_palette: key })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Errore, riprova')
-    }
-  }
-
-  async function handleFontChange(key: string) {
-    if (!profile) return
-    applyTheme(profile.theme_palette, key)
-    try {
-      await updateProfile({ theme_font: key })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Errore, riprova')
     }
@@ -128,55 +107,6 @@ export function Profile() {
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${pillClass(profile.gender === opt.value)}`}
             >
               {opt.label}
-            </button>
-          ))}
-        </div>
-      </Card>
-
-      <Card>
-        <h2 className="mb-3 font-display text-lg font-bold">Palette colori</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {Object.entries(PALETTES).map(([key, palette]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => handlePaletteChange(key)}
-              className={`flex items-center gap-2 rounded-2xl p-2.5 text-left transition ${
-                profile.theme_palette === key
-                  ? 'shadow-glow-sm ring-2 ring-pop-purple'
-                  : 'border border-neutral-200 hover:border-neutral-300 dark:border-neutral-700'
-              }`}
-            >
-              <span
-                className="h-8 w-8 shrink-0 rounded-full border border-black/10"
-                style={{
-                  background: `linear-gradient(135deg, ${palette.purple}, ${palette.pink} 60%, ${palette.yellow})`,
-                }}
-              />
-              <span className="text-sm font-semibold">{palette.label}</span>
-            </button>
-          ))}
-        </div>
-      </Card>
-
-      <Card>
-        <h2 className="mb-3 font-display text-lg font-bold">Font</h2>
-        <div className="flex flex-col gap-2">
-          {Object.entries(FONTS).map(([key, font]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => handleFontChange(key)}
-              className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left transition ${
-                profile.theme_font === key
-                  ? 'shadow-glow-sm bg-pop-purple/5 ring-2 ring-pop-purple'
-                  : 'border border-neutral-200 hover:border-neutral-300 dark:border-neutral-700'
-              }`}
-            >
-              <span className="text-sm text-neutral-500">{font.label}</span>
-              <span className="text-xl font-bold" style={{ fontFamily: font.family }}>
-                POP 📸
-              </span>
             </button>
           ))}
         </div>

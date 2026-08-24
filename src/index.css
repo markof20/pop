@@ -1,13 +1,13 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-pop-purple: #aa3bff;
-  --color-pop-purple-dark: #7c1fd4;
-  --color-pop-pink: #ff5da2;
-  --color-pop-yellow: #ffcf4d;
+  --color-pop-purple: #7c5cfc;
+  --color-pop-purple-dark: #6247d9;
+  --color-pop-pink: #ff6b6b;
+  --color-pop-yellow: #f59e0b;
+  --color-pop-teal: #14b8a6;
   --color-pop-cream: #fff8ec;
-  --font-display: 'Baloo 2', 'Segoe UI', system-ui, sans-serif;
-  --font-hand: 'Caveat', 'Segoe UI', cursive;
+  --font-display: 'Fredoka', 'Segoe UI', system-ui, sans-serif;
 }
 
 :root {
@@ -35,31 +35,27 @@ body {
 
 /* --- Sistema "vibrante e glass": sfondo chiaro, blob sfumati, superfici in vetro. --- */
 
+/* Superficie piatta (bordo sottile, niente vetro sfocato colorato) invece
+   del glassmorphism di prima. */
 .glass {
-  /* background-color, non "background": la scorciatoia azzererebbe il
-     background-image quando .glass viene combinata con un gradiente
-     Tailwind (bg-gradient-to-br ecc.) sullo stesso elemento. */
-  background-color: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: #ffffff;
+  border: 1px solid #ececec;
 }
 
 @media (prefers-color-scheme: dark) {
   .glass {
-    background-color: rgba(24, 22, 34, 0.55);
-    border-color: rgba(255, 255, 255, 0.08);
+    background-color: #1a1a1e;
+    border-color: #2a2a2e;
   }
 }
 
-/* Ombre morbide e colorate (si adattano alla palette scelta dall'utente, via
-   color-mix sulla variabile del tema) invece delle ombre nere dure di prima. */
+/* Ombre neutre e sottili invece del glow colorato viola di prima. */
 .shadow-glow {
-  box-shadow: 0 16px 40px -12px color-mix(in srgb, var(--color-pop-purple) 45%, transparent);
+  box-shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.16);
 }
 
 .shadow-glow-sm {
-  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--color-pop-purple) 45%, transparent);
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.14);
 }
 
 /* Micro-animazioni condivise: nessuna libreria, solo CSS. */
@@ -108,16 +104,6 @@ body {
   }
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) translateX(0);
-  }
-  50% {
-    transform: translateY(-16px) translateX(8px);
-  }
-}
-
 /* Il "reveal": la foto emerge da una leggera sfocatura invece di apparire di scatto,
    per dare peso al momento in cui una foto si sblocca. */
 @keyframes reveal {
@@ -162,10 +148,6 @@ body {
 
 .animate-pulse-ring {
   animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animate-float {
-  animation: float 7s ease-in-out infinite;
 }
 
 .animate-reveal {

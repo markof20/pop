@@ -149,7 +149,7 @@ export function Party() {
 
       {session?.status === 'active' && currentTask && (
         <>
-          <Card className="shadow-glow animate-pop-in bg-gradient-to-br from-pop-purple to-pop-pink text-center text-white">
+          <Card className="shadow-glow animate-pop-in bg-pop-purple text-center text-white">
             <p className="text-xs font-bold uppercase tracking-widest text-white/70">Tocca a</p>
             <h2 className="font-display mt-1 text-2xl font-extrabold">{currentAssigneeName ?? '...'}</h2>
             <p className="mt-3 text-lg">{currentTask.prompt_text}</p>

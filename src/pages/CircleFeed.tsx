@@ -68,7 +68,7 @@ function PendingWinBanner({ circleId }: { circleId: string }) {
   }
 
   return (
-    <Card className="animate-bounce-in bg-gradient-to-br from-pop-yellow/25 to-pop-yellow/5">
+    <Card className="animate-bounce-in bg-pop-yellow/10">
       <p className="font-display text-lg font-bold text-neutral-800 dark:text-neutral-100">
         🏆 Hai vinto ieri!
       </p>
@@ -157,17 +157,7 @@ export function CircleFeed() {
   }
 
   return (
-    <div className="relative mx-auto flex max-w-2xl flex-col gap-6 overflow-x-hidden px-4 py-8">
-      <div
-        aria-hidden
-        className="animate-float pointer-events-none fixed -top-24 -right-24 h-80 w-80 rounded-full bg-pop-pink/20 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="animate-float pointer-events-none fixed -bottom-24 -left-24 h-80 w-80 rounded-full bg-pop-purple/20 blur-3xl"
-        style={{ animationDelay: '2.5s' }}
-      />
-
+    <div className="relative mx-auto flex max-w-2xl flex-col gap-6 px-4 py-8">
       <div className="relative flex items-center justify-between">
         <Link to="/" className="text-sm font-medium text-neutral-500 hover:underline">
           ← Cerchie
@@ -228,7 +218,7 @@ export function CircleFeed() {
         </Card>
       )}
 
-      <div className="shadow-glow animate-pop-in relative overflow-hidden rounded-3xl bg-gradient-to-br from-pop-purple via-pop-purple-dark to-pop-pink p-6 text-center text-white">
+      <div className="shadow-glow animate-pop-in relative overflow-hidden rounded-3xl bg-pop-purple p-6 text-center text-white">
         <p className="text-xs font-bold uppercase tracking-widest text-white/70">
           {challenge.source === 'winner_choice' ? '🎬 Scelto dal Game Master' : 'Il prompt di oggi'}
         </p>
@@ -266,7 +256,7 @@ export function CircleFeed() {
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="glass aspect-square w-16 rounded-2xl bg-gradient-to-br from-pop-purple/30 to-pop-pink/30"
+                  className="glass aspect-square w-16 rounded-2xl bg-pop-purple/10"
                 />
               ))}
             </div>

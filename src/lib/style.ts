@@ -10,15 +10,10 @@ function hashString(str: string) {
   return [...str].reduce((acc, ch) => acc + ch.charCodeAt(0), 0)
 }
 
-const AVATAR_GRADIENTS = [
-  'bg-gradient-to-br from-pop-purple to-pop-pink',
-  'bg-gradient-to-br from-pop-pink to-pop-yellow',
-  'bg-gradient-to-br from-pop-yellow to-pop-purple',
-  'bg-gradient-to-br from-pop-purple-dark to-pop-purple',
-]
+const AVATAR_COLORS = ['bg-pop-purple', 'bg-pop-pink', 'bg-pop-teal', 'bg-pop-yellow']
 
-export function avatarGradient(name: string) {
-  return AVATAR_GRADIENTS[hashString(name) % AVATAR_GRADIENTS.length]
+export function avatarColor(name: string) {
+  return AVATAR_COLORS[hashString(name) % AVATAR_COLORS.length]
 }
 
 export const PILL_SELECTED = 'shadow-glow-sm border border-transparent bg-pop-purple text-white'

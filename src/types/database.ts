@@ -7,8 +7,6 @@ export interface Profile {
   username: string
   avatar_url: string | null
   gender: Gender | null
-  theme_palette: string
-  theme_font: string
   created_at: string
 }
 

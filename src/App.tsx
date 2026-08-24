@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
 import { ProtectedRoute } from './components/ProtectedRoute'
-import { ThemeSync } from './components/ThemeSync'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import { Onboarding } from './pages/Onboarding'
@@ -16,7 +15,6 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ThemeSync />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route

@@ -195,7 +195,7 @@ export function Capture() {
             <button
               onClick={handleConfirm}
               disabled={submitting}
-              className="rounded-full bg-pop-purple px-6 py-3 font-semibold text-white shadow-lg shadow-pop-purple/40 transition active:scale-95 disabled:opacity-50"
+              className="rounded-full bg-pop-purple px-6 py-3 font-semibold text-white shadow-lg shadow-black/30 transition active:scale-95 disabled:opacity-50"
             >
               {submitting ? 'Caricamento...' : '✅ Usa questa foto'}
             </button>
