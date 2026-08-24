@@ -155,3 +155,39 @@ export interface PartyLeaderboardRow {
   downvotes: number
   net_score: number
 }
+
+export interface GifSession {
+  id: string
+  circle_id: string
+  started_by: string
+  prompt_text: string
+  submission_end_at: string
+  voting_end_at: string
+  created_at: string
+}
+
+export interface GifSubmission {
+  id: string
+  session_id: string
+  user_id: string
+  giphy_id: string
+  gif_url: string
+  submitted_at: string
+}
+
+export interface GifSubmissionResult {
+  submission_id: string
+  user_id: string
+  username: string
+  giphy_id: string
+  gif_url: string
+  vote_count: number
+  submitted_at: string
+}
+
+export interface GifVote {
+  session_id: string
+  voter_id: string
+  submission_id: string
+  created_at: string
+}

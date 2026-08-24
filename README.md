@@ -16,6 +16,9 @@ Stack: React + Vite + TypeScript + Tailwind CSS v4, Supabase (Auth/Postgres/Stor
    VITE_SUPABASE_URL=...
    VITE_SUPABASE_ANON_KEY=...
    ```
+5. Per la modalità GIF Battle, crea una app gratuita su
+   [developers.giphy.com](https://developers.giphy.com) e incolla la API key
+   (beta key, attiva subito) come `VITE_GIPHY_API_KEY` in `.env.local`.
 
 Se usi la [Supabase CLI](https://supabase.com/docs/guides/cli) collegata al progetto, puoi anche fare:
 

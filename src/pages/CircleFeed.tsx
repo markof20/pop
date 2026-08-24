@@ -180,6 +180,12 @@ export function CircleFeed() {
             🎉 Party
           </Link>
           <Link
+            to={`/circles/${id}/gif`}
+            className="text-sm font-medium text-neutral-500 hover:underline"
+          >
+            🎬 Gif
+          </Link>
+          <Link
             to={`/circles/${id}/settings`}
             className="text-sm font-medium text-neutral-500 hover:underline"
           >

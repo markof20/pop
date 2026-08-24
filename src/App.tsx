@@ -11,6 +11,7 @@ import { Capture } from './pages/Capture'
 import { PhotoDetail } from './pages/PhotoDetail'
 import { Profile } from './pages/Profile'
 import { Party } from './pages/Party'
+import { GifBattle } from './pages/GifBattle'
 
 function App() {
   return (
@@ -80,6 +81,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Party />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/circles/:id/gif"
+            element={
+              <ProtectedRoute>
+                <GifBattle />
               </ProtectedRoute>
             }
           />
