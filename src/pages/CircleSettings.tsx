@@ -20,7 +20,7 @@ const CATEGORY_OPTIONS: { value: CircleCategory; label: string }[] = [
 
 function LeaderboardSection({ circleId }: { circleId: string }) {
   const [period, setPeriod] = useState<LeaderboardPeriod>('all_time')
-  const { rows, loading } = useLeaderboard(circleId, period)
+  const { rows, loading, error } = useLeaderboard(circleId, period)
 
   return (
     <Card>
@@ -52,6 +52,8 @@ function LeaderboardSection({ circleId }: { circleId: string }) {
 
       {loading ? (
         <p className="text-sm text-neutral-500">Carico...</p>
+      ) : error ? (
+        <p className="text-sm text-red-600">{error}</p>
       ) : rows.length === 0 ? (
         <p className="text-sm text-neutral-500">Nessun dato ancora</p>
       ) : (
