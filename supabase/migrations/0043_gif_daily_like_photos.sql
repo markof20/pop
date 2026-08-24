@@ -12,6 +12,10 @@
 -- e sopra il risultato di ieri (stesso pattern di get_latest_completed_challenge
 -- per le foto).
 
+-- La vecchia policy referenzia submission_end_at: va tolta prima di poter
+-- droppare la colonna, altrimenti Postgres rifiuta l'ALTER TABLE.
+drop policy if exists gif_submissions_select on public.gif_submissions;
+
 alter table public.gif_sessions drop column submission_end_at;
 alter table public.gif_sessions drop column voting_end_at;
 
@@ -188,7 +192,6 @@ grant execute on function public.vote_gif(uuid, uuid) to authenticated;
 -- foto (photos_select), la visibilità è solo "sei membro della cerchia" — lo
 -- sblocco "manda la tua prima di vedere le altre" resta, ma solo lato client
 -- (stesso pattern di usePhotos), non più una garanzia lato DB.
-drop policy if exists gif_submissions_select on public.gif_submissions;
 create policy gif_submissions_select on public.gif_submissions
   for select using (
     public.is_circle_member((select circle_id from public.gif_sessions where id = session_id))
